@@ -1,5 +1,7 @@
 # Event Infos
 
+[![Code Climate](https://codeclimate.com/github/dasantonym/event-infos/badges/gpa.svg)](https://codeclimate.com/github/dasantonym/event-infos) [![DavidDM](https://david-dm.org/dasantonym/event-infos.svg)](https://david-dm.org/dasantonym/event-infos)
+
 Simple database for event organisers. User authentication not yet implemented.
 
 ## Stability
