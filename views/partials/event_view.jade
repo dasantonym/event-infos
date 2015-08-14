@@ -1,0 +1,124 @@
+.panel.panel-primary
+    .panel-heading
+        h3.panel-title Event Info
+    .panel-body
+        .row
+            .col-md-12
+                p
+                    a(href='https://www.dropbox.com/s/3fvmtf7tayogql1/GV_VenueInfoDruckerei.pdf?dl=0', target='_blank') General info about our venue.
+                    | Please read this prior to promoting your event!
+        .row
+            .col-md-12
+                .form-group
+                    h3 {{ event.title }}
+        .row
+            .col-md-6
+                .form-group
+                    label.control-label Location
+                    p {{ locationTitle }}
+            .col-md-6
+                .form-group
+                    label.control-label Event type
+                    p {{ event.type }}
+        .row
+            .col-sm-6
+                .form-group
+                    label.control-label Date
+                    p {{ formatDate(event.event_date) }}
+            .col-sm-6
+                .form-group
+                    label.control-label Time
+                    p {{ formatTime(event.event_date) }}
+        .row
+            .col-md-6
+                .form-group
+                    label.control-label Organiser
+                    p {{ event.organiser }}
+            .col-md-6
+                .form-group
+                    label.control-label Organiser contact
+                    p {{ event.organiser_contact }}
+        .row
+            .col-sm-12
+                .form-group
+                    label.control-label Description
+                    div(btf-markdown="event.description")
+        .row
+            .col-sm-12
+                .form-group
+                    label.control-label Announcement Text
+                    div(btf-markdown="event.announcement_text")
+        .row
+            .col-sm-12
+                h4 Timetable
+                .table-responsive
+                    table.table.table-striped
+                        tbody
+                            tr(ng-repeat='item in event.timetable')
+                                td {{ pad(getDate(item.time).getHours(), 2) + ':' + pad(getDate(item.time).getMinutes(), 2) + ' ' + pad(getDate(item.time).getDate(), 2) + '.' + pad(getDate(item.time).getMonth(), 2) }}
+                                td {{ item.description }}
+        .row
+            .col-sm-12
+                h4 Artists
+                .panel.panel-default(ng-repeat='artist in artists')
+                    .panel-body
+                        .row
+                            .col-sm-6
+                                .form-group
+                                    label.control-label Title
+                                    p {{ artist.title }}
+                            .col-sm-6
+                                .form-group
+                                    label.control-label Style
+                                    p {{ artist.style }}
+                        .row
+                            .col-sm-6
+                                .form-group
+                                    label.control-label Contact info
+                                    div(btf-markdown="artist.contact_info")
+                            .col-sm-6
+                                .form-group
+                                    label.control-label Short description
+                                    div(btf-markdown="artist.short_description")
+                        .row(ng-if="artist.press_text")
+                            .col-sm-12
+                                .form-group
+                                    label.control-label Press text
+                                    div(btf-markdown="artist.press_text")
+                        .row(ng-if="artist.city_country || artist.members")
+                            .col-sm-6
+                                .form-group
+                                    label.control-label City / Country
+                                    p {{ artist.city_country }}
+                            .col-sm-6
+                                .form-group
+                                    label.control-label Number of members
+                                    p {{ artist.members }}
+                        .row(ng-if="artist.members_vegetarian || artist.members_vegan")
+                            .col-sm-6
+                                .form-group
+                                    label.control-label Number of vegetarians
+                                    p {{ artist.members_vegetarian }}
+                            .col-sm-6
+                                .form-group
+                                    label.control-label Number of vegans
+                                    p {{ artist.members_vegan }}
+                        .row(ng-if="artist.members_hostel || artist.members_external_host")
+                            .col-sm-6
+                                .form-group
+                                    label.control-label Number staying in hostel
+                                    p {{ artist.members_hostel }}
+                            .col-sm-6
+                                .form-group
+                                    label.control-label Number of external accomodations
+                                    p {{ artist.members_external_host }}
+                        .row(ng-if="artist.hostel_responsible")
+                            .col-sm-12
+                                .form-group
+                                    label.control-label Responsible for hostel accomodation
+                                    p {{ artist.hostel_responsible }}
+                        .row(ng-if="artist.notes")
+                            .col-sm-12
+                                .form-group
+                                    label.control-label Additional notes
+                                    div(btf-markdown="artist.notes")

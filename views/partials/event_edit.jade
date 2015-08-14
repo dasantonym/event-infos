@@ -1,0 +1,131 @@
+alert(ng-repeat='alert in alerts' type='{{alert.type}}' close='closeAlert($index)') {{alert.msg}}
+form(name='dataForm', role='form', ng-submit='submit()')
+    .panel.panel-primary
+        .panel-heading
+            h3.panel-title {{ formTitle }}
+        .panel-body
+            .row
+                .col-sm-12
+                    p
+                        a(href='https://www.dropbox.com/s/3fvmtf7tayogql1/GV_VenueInfoDruckerei.pdf?dl=0', target='_blank') General info about our venue.
+                        | Please read this prior to promoting your event!
+            .row
+                .col-sm-12
+                    .form-group
+                        label.control-label Title
+                        input.input-lg.form-control(ng-model='event.title')
+            .row
+                .col-md-6
+                    .form-group
+                        label.control-label Location
+                        select.form-control(ng-model="event.location_uuid", ng-options="location.uuid as location.title for location in locations")
+                .col-sm-6
+                    .form-group
+                        label.control-label Event type
+                        input.form-control(ng-model='event.type')
+            .row
+                .col-sm-6
+                    .form-group
+                        label.control-label Date
+                        input#eventdate.form-control(ng-click="open($event)", type="text", datepicker-popup="{{format}}", ng-model="event.event_date", is-open="status.eventdate_opened", min-date="minDate", max-date="'2020-06-22'", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", close-text="Close")
+                .col-sm-6
+                    .form-group
+                        label.control-label Time
+                        timepicker(ng-model="event.event_time", hour-step="1", minute-step="5", show-meridian="false", show-spinners="false")
+            .row(ng-if="event.uuid")
+                .col-sm-12
+                    .form-group
+                        label.control-label View Link
+                        p
+                            a(ng-href="{{ '/events/' + event.uuid }}") {{ '/events/' + event.uuid }}
+            .row(ng-if="event.uuid")
+                .col-sm-12
+                    .form-group
+                        label.control-label Edit Link
+                        p
+                            a(ng-href="{{ '/events/' + event.uuid + '/' + event.access_token }}") {{ '/events/' + event.uuid + '/' + event.access_token }}
+            .row
+                .col-md-6
+                    .form-group
+                        label.control-label Organiser
+                        input.form-control(ng-model='event.organiser')
+                .col-sm-6
+                    .form-group
+                        label.control-label Organiser contact
+                        input.form-control(ng-model='event.organiser_contact')
+            .row
+                .col-sm-12
+                    .form-group
+                        label.control-label Description
+                        textarea.form-control(rows='4', ng-model='event.description')
+            .row
+                .col-sm-12
+                    .form-group
+                        label.control-label Announcement text
+                        textarea.form-control(rows='6', ng-model='event.announcement_text')
+            .row
+                .col-sm-12
+                    h3 Timetable
+                    .form-group
+                        label.control-label Timetable
+                        .table-responsive
+                            table.table.table-striped
+                                tbody
+                                    tr(ng-repeat='item in event.timetable')
+                                        td {{ pad(getDate(item.time).getHours(), 2) + ':' + pad(getDate(item.time).getMinutes(), 2) + ' ' + pad(getDate(item.time).getDate(), 2) + '.' + pad(getDate(item.time).getMonth(), 2) }}
+                                        td {{ item.description }}
+                                        td.text-right
+                                            button.btn.btn-primary(type="button", ng-click="removeFromTimetable(item)") Remove
+                    .form-group
+                        .row
+                            .col-sm-2
+                                label.control-label Date
+                                input#timetable.form-control(ng-click="open($event)", type="text", datepicker-popup="{{format}}", ng-model="timetable_add.date", is-open="status.timetable_opened", min-date="minDate", max-date="'2020-06-22'", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", close-text="Close")
+                            .col-sm-2
+                                label.control-label Time
+                                timepicker(ng-model="timetable_add.time", hour-step="1", minute-step="5", show-meridian="false", show-spinners="false")
+                            .col-sm-6
+                                label.control-label Description
+                                input.form-control(ng-model='timetable_add.description')
+                            .col-sm-2
+                                label.control-label!= '&nbsp;'
+                                div.text-right
+                                    button.btn.btn-primary(type="button", ng-click='addToTimetable()') Add to timetable
+            .row(ng-if="event.uuid")
+                .col-sm-12
+                    h3 Artists
+                    .form-group
+                        .table-responsive
+                            table.table.table-striped
+                                tbody
+                                    tr(ng-repeat='artist in artists')
+                                        td {{ artist.title }}
+                                        td.text-right
+                                            a.btn.btn-primary(type="button", ng-href="{{ '/artists/' + [event.uuid, artist.uuid, artist.access_token].join('/') }}") Edit
+                    .form-group
+                        .row
+                            .col-sm-12.text-right
+                                a.btn.btn-primary(ng-href="{{ '/artists/create_artist/' + event.uuid }}") Add new artist
+            .row(ng-if="event.uuid")
+                .col-sm-12
+                    h3 File assets
+                    p (e.g. promotional material, other documents)
+                    .form-group
+                        .table-responsive
+                            table.table.table-striped
+                                tbody
+                                    tr(ng-repeat='asset in asset_data.assets')
+                                        td
+                                            a(ng-href="{{ '/api/assets/download/' + asset.uuid }}") {{ asset.original_filename }}
+                                        td {{ asset.size }}
+                    .form-group
+                        .row
+                            .col-sm-12
+                                .well
+                                    div(ngf-select ng-model="asset_data.asset_add_file") {{ asset_data.asset_add_file.name || 'Select file to upload' }}
+                        .row
+                            .col-sm-12.text-right
+                                a.btn.btn-primary(ng-click="addAsset()") Add file asset
+
+        .panel-footer.btn-group-lg.text-right
+            button.btn.btn-primary.btn-lg Save

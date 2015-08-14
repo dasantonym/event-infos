@@ -1,0 +1,6 @@
+.idea
+node_modules
+assets
+tmp
+bower_components
+public/css/*.css

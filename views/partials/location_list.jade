@@ -1,0 +1,7 @@
+h2 Locations
+.table-responsive
+    table.table.table-striped
+        tbody
+            tr(ng-repeat='location in locations')
+                td
+                    a(ng-href='locations/{{location.uuid}}') {{location.title}}

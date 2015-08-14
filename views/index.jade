@@ -1,0 +1,11 @@
+doctype html
+html(ng-app='event-infos')
+    head
+        base(href='/')
+        script(language='javascript', src='/static/deps.js')
+        script(language='javascript', src='/static/app.js')
+        link(rel='stylesheet', href='/css/site.css')
+    body
+        .container-fluid(cg-busy="{promise:pagePromise,message:'Loading page...',templateUrl:'partials/busy'}")
+            .row-fluid
+                .col-md-12(ng-view,cg-busy="{promise:promise,message:promiseString,templateUrl:'partials/busy'}")

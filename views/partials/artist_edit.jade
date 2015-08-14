@@ -1,0 +1,85 @@
+alert(ng-repeat='alert in alerts' type='{{alert.type}}' close='closeAlert($index)') {{alert.msg}}
+form(name='dataForm', role='form', ng-submit='submit()')
+    .panel.panel-primary
+        .panel-heading
+            h3.panel-title {{ formTitle }}
+        .panel-body
+            .row
+                .col-sm-12
+                    p
+                        a(href='https://www.dropbox.com/s/3fvmtf7tayogql1/GV_VenueInfoDruckerei.pdf?dl=0', target='_blank') General info about our venue.
+                        | Please read this prior to promoting your event!
+            .row.form-group
+                .col-sm-6
+                    label.control-label Title
+                    input.form-control(ng-model='artist.title')
+                .col-sm-6
+                    label.control-label Style
+                    input.form-control(ng-model='artist.style')
+            .row
+                .col-sm-12
+                    .form-group
+                        label.control-label Contact info
+                        textarea.form-control(rows='3', ng-model='artist.contact_info')
+            .row
+                .col-sm-12
+                    .form-group
+                        label.control-label Short description
+                        textarea.form-control(rows='3', ng-model='artist.short_description')
+            .row
+                .col-sm-12
+                    .form-group
+                        label.control-label Press text
+                        textarea.form-control(rows='6', ng-model='artist.press_text')
+            .row
+                .col-sm-6
+                    label.control-label City / Country
+                    input.form-control(ng-model='artist.city_country')
+                .col-sm-6
+                    label.control-label Number of members
+                    input.form-control(type="number", ng-model='artist.members')
+            .row
+                .col-sm-6
+                    label.control-label Number of vegetarians
+                    input.form-control(type="number", ng-model='artist.members_vegetarian')
+                .col-sm-6
+                    label.control-label Number of vegans
+                    input.form-control(type="number", ng-model='artist.members_vegan')
+            .row
+                .col-sm-6
+                    label.control-label Number staying in hostel
+                    input.form-control(type="number", ng-model='artist.members_hostel')
+                .col-sm-6
+                    label.control-label Number of external accomodations
+                    input.form-control(type="number", ng-model='artist.members_external_host')
+            .row
+                .col-sm-6
+                    label.control-label Responsible for hostel accomodation
+                    input.form-control(type="number", ng-model='artist.hostel_responsible')
+            .row
+                .col-sm-12
+                    .form-group
+                        label.control-label Additional notes
+                        textarea.form-control(rows='3', ng-model='artist.notes')
+            .row(ng-if="artist.uuid")
+                .col-sm-12
+                    h3 File assets
+                    p (e.g. riders, promotional material)
+                    .form-group
+                        .table-responsive
+                            table.table.table-striped
+                                tbody
+                                    tr(ng-repeat='asset in asset_data.assets')
+                                        td
+                                            a(ng-href="{{ '/api/assets/download/' + asset.uuid }}") {{ asset.original_filename }}
+                                        td {{ asset.size }}
+                    .form-group
+                        .row
+                            .col-sm-12
+                                .well
+                                    div(ngf-select ng-model="asset_data.asset_add_file") {{ asset_data.asset_add_file.name || 'Select file to upload' }}
+                        .row
+                            .col-sm-12.text-right
+                                a.btn.btn-primary(ng-click="addAsset()") Add file asset
+        .panel-footer.btn-group-lg.text-right
+            button.btn.btn-primary.btn-lg Save
